@@ -10,12 +10,16 @@ config:
     hero:
       name: 耶温
       tagline: Front End Developer
-      text: 认真生活，简单做人，用心做事。
+      text: 认真生活，简单做人，用心做事。新站上线：yuwb.dev
       actions:
+        -
+          text: 访问 yuwb.dev
+          link: https://yuwb.dev
+          theme: brand
         -
           text: 笔  记
           link: /blog/
-          theme: brand
+          theme: alt
         -
           text: Github
           link: https://github.com/yevin-yu
@@ -23,6 +27,6 @@ config:
   -
     type: profile
     name: 耶温-前端开发
-    description: 认真生活，简单做人，用心做事。<br/>个人主页：https://yuwb.cn   联系方式：yuwb0521@yeah.net
+    description: 认真生活，简单做人，用心做事。<br/>新站：https://yuwb.dev<br/>个人主页：https://yuwb.cn   联系方式：yuwb0521@yeah.net
     avatar: /logo.png
 ---

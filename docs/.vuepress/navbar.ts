@@ -40,4 +40,9 @@ export const navbar = defineNavbarConfig([
       { text: "SoftTest", link: "/SoftTest/q5jikepi/", icon: "mdi:notes" },
     ],
   },
+  {
+    text: "新站[yuwb.dev]",
+    link: "https://yuwb.dev",
+    icon: "material-symbols:rocket-launch",
+  },
 ]);
