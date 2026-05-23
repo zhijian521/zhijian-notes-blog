@@ -229,7 +229,7 @@ test(2)
 ```
 在上述代码中，变量的作用域是在写代码的时候，就已经确定下来的。作用域嵌套如下图所示：
 
-![alt text](images/image10.png)
+![作用域嵌套](@source/notes/JavaScript/images/image10.png)
 
 一共有三层作用域逐级包括，最里层函数 `fun` 所创建的作用域包含标识符 `b`。函数 `test` 创建的作用域包括两个标识符 `fun` 和 `a`。最外层作用域包括标识符 `test` 。
 

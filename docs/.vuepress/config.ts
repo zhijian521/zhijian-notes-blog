@@ -18,6 +18,7 @@ export default defineUserConfig({
     plugins: {
       shiki: {
         // 代码高亮
+        theme: 'nord',
         languages: [
           "shell",
           "bash",
@@ -28,10 +29,6 @@ export default defineUserConfig({
           "vue",
           "nginx",
         ],
-      },
-      markdownEnhance: {
-        // 代码块
-        demo: true,
       },
       comment: {
         // 评论

@@ -70,7 +70,7 @@ const pool = mysql.createPool({
 有人提到了一个骚方法，如下：
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/Node.js/images/image1.png" alt="MySQL">
+    ![MySQL](@source/Blog/Node.js/images/image1.png)
 </div>
 
 

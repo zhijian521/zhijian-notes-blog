@@ -22,7 +22,7 @@ beforeUpdate() {
 > 下为 Element 官方文档 对于 `doLayout()` 方法的解释
 
 <div style="text-align: center; margin: 12px 20px;">
-    <img src="@source/Blog/Vue2/images/image0.png" alt="PNG">
+    ![PNG](@source/Blog/Vue2/images/image0.png)
 </div>
 
 
@@ -106,19 +106,19 @@ export default {
 复现效果如下，可以到明显看到切换或者加载表格时表现出抖动和闪烁，影响体验。
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/Vue2/images/gif1.gif" alt="GIF">
+    ![GIF](@source/Blog/Vue2/images/gif1.gif)
 </div>
 
 ## 问题研究
 
 录制视频逐帧分析，发现闪烁和抖动的原因是表格在加载过程中，渲染表头时出现换行，导致表格高度变化，从而出现抖动和闪烁。如下图：
 <div style="text-align: center; margin: 12px 20px;">
-    <img src="@source/Blog/Vue2/images/image1.png" alt="PNG">
+    ![PNG](@source/Blog/Vue2/images/image1.png)
 </div>
 
 只有很短的几帧时间，随后表头渲染完成，表格高度恢复正常。如下：
 <div style="text-align: center; margin: 12px 20px;">
-    <img src="@source/Blog/Vue2/images/image2.png" alt="PNG">
+    ![PNG](@source/Blog/Vue2/images/image2.png)
 </div>
 
 ## 解决方案
@@ -172,7 +172,7 @@ async handleClick() {
 实现效果如下：
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/Vue2/images/gif2.gif" alt="PNG">
+    ![PNG](@source/Blog/Vue2/images/gif2.gif)
 </div>
 
 可以看到，使用 `v-if` 控制表格的渲染，解决了表格闪烁和抖动问题。但是，又存在一个问题，就是表格在加载过程中，无法显示加载状态，体验较差。需要单独在外层元素中，使用 `v-loading` 属性控制加载状态。
@@ -194,7 +194,7 @@ async handleClick() {
 实现效果如下，可以看到，表格在加载过程中，可以显示加载状态，体验较好。
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/Vue2/images/gif3.gif" alt="PNG">
+    ![PNG](@source/Blog/Vue2/images/gif3.gif)
 </div>
 
 3. 使用 ElementUI 的 `el-table` 组件的  `doLayout` 方法，在 `beforeUpdate` 生命周期中调用，重新渲染表格。
@@ -209,7 +209,7 @@ beforeUpdate() {
 实现效果如下，可以看到表格在加载过程中正常，可以显示加载状态，体验较好。并且不需要添加额外代码，推荐使用。
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/Vue2/images/gif4.gif" alt="PNG">
+    ![PNG](@source/Blog/Vue2/images/gif4.gif)
 </div>
 
 ## 总结

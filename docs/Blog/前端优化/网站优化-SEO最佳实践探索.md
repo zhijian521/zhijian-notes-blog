@@ -70,7 +70,7 @@ tags:
 搜索引擎会根据网站标题和描述进行搜索，因此需要确保标题和描述的准确性和相关性。
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/前端优化/images/image1.png" alt="SEO">
+    ![SEO](@source/Blog/前端优化/images/image1.png)
 </div>
 
 ## 语义化标签
@@ -132,7 +132,7 @@ tags:
     <!-- 针对高DPR设备提供JPEG格式 -->
     <source srcset="image-2x.jpg 2x, image-1x.jpg 1x" type="image/jpeg">
     <!-- 默认图片 -->
-    <img src="image-1x.jpg" alt="描述性文本" width="600" height="400">
+    <img src="image-1x.jpg" alt="描述性文本" width="600" height="400" />
 </picture>
 ```
 如上：`2x` 和 `1x` 表示图片的设备像素比，`image-2x.webp` 表示针对设备像素比为2的设备的WebP格式图片，`image-1x.webp` 表示针对设备像素比为1的设备的WebP格式图片。
@@ -142,13 +142,12 @@ tags:
 除了根据DPR提供不同格式的图片，还可以使用 `srcset` 和 `sizes` 属性来提供不同分辨率的图片。
 
 ```html
-<img 
-    src="image-600.jpg" 
+<img src="image-600.jpg" 
     srcset="image-300.jpg 300w, image-600.jpg 600w, image-1200.jpg 1200w" 
     sizes="(max-width: 600px) 100vw, 600px" 
     alt="描述性文本" 
     width="600" 
-    height="400" >
+    height="400"  />
 ```
 
 -   `srcset`：定义不同分辨率的图像及其宽度。
@@ -179,7 +178,7 @@ tags:
 2. 加载图片
 
 ```html
-<img src="https://cdn.example.com/images/fresh-red-apple.jpg"  alt="新鲜的红色苹果" >
+<img src="https://cdn.example.com/images/fresh-red-apple.jpg"  alt="新鲜的红色苹果"  />
 ```
 
 除此之外，我们也可以把我们的网站，部署到CDN上，这样可以减少服务器的负载，提高页面加载速度。
@@ -295,7 +294,7 @@ images.forEach(image => {
 在前端开发中，图片的具名化是指为图片文件和相关属性（如替代文本）提供清晰、描述性和优化的命名方式。这一过程对于搜索引擎优化（SEO）至关重要，因为它帮助搜索引擎理解图片内容，从而提高网页在搜索结果中的排名。此外，良好的图片具名化也能改善用户体验，尤其是对于使用屏幕阅读器的用户。
 
 ```html
-<img src="images/fresh-red-apple.jpg" alt="新鲜的红色苹果在白色背景上" >
+<img src="images/fresh-red-apple.jpg" alt="新鲜的红色苹果在白色背景上"  />
 ```
 
 **主要注意项**

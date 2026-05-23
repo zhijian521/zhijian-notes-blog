@@ -39,7 +39,7 @@ filter: blur(5px);
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - blur</h1>
-    <img class="image" src="https://via.placeholder.com/300" alt="示例图像">
+    <img class="image" src="https://via.placeholder.com/300" alt="示例图像" />
 ```
 ```css
 *{
@@ -67,7 +67,7 @@ filter: brightness(120%)
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - brightness</h1>
- <img class="image" src="https://via.placeholder.com/300" alt="示例图像">
+ <img class="image" src="https://via.placeholder.com/300" alt="示例图像" />
 ```
 ```css
 *{
@@ -95,7 +95,7 @@ filter: contrast(200%); /* 对比度增加100% */
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - contrast</h1>
- <img class="image" src="https://via.placeholder.com/300" alt="示例图像">
+ <img class="image" src="https://via.placeholder.com/300" alt="示例图像" />
 ```
 ```css
 *{
@@ -123,7 +123,7 @@ filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - drop-shadow</h1>
- <img class="image" src="https://via.placeholder.com/300" alt="示例图像">
+ <img class="image" src="https://via.placeholder.com/300" alt="示例图像" />
 ```
 ```css
 *{
@@ -152,7 +152,7 @@ filter: grayscale(100%)
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - grayscale</h1>
- <img class="image"  alt="示例图像">
+ <img class="image"  alt="示例图像" />
 ```
 ```css
 *{
@@ -183,7 +183,7 @@ filter: invert(100%)
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - invert</h1>
- <img class="image"  alt="示例图像">
+ <img class="image"  alt="示例图像" />
 ```
 ```css
 *{
@@ -212,7 +212,7 @@ filter: opacity(50%)
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - opacity</h1>
- <img class="image"  alt="示例图像">
+ <img class="image"  alt="示例图像" />
 ```
 ```css
 *{
@@ -240,7 +240,7 @@ filter: opacity(50%)
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - saturate</h1>
- <img class="image"  alt="示例图像">
+ <img class="image"  alt="示例图像" />
 ```
 ```css
 *{
@@ -271,7 +271,7 @@ filter: sepia(100%); /* 完全棕褐色 */
 ::: normal-demo filter 代码演示
 ```html
  <h1>filter - sepia</h1>
- <img class="image"  alt="示例图像">
+ <img class="image"  alt="示例图像" />
 ```
 ```css
 *{

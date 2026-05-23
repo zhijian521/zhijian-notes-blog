@@ -16,7 +16,7 @@ tags:
 > github： https://github.com/coreybutler/nvm-windows/releases
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/Node.js/images/image2.png" alt="Node.js">
+    ![Node.js](@source/Blog/Node.js/images/image2.png)
 </div>
 
 
@@ -25,13 +25,13 @@ tags:
 下载 exe 安装程序，一直点击下一步安装。
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/Node.js/images/image3.png" alt="Node.js">
+    ![Node.js](@source/Blog/Node.js/images/image3.png)
 </div>
 
 安装完成之后，查看环境变量是否有以下设置：
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img src="@source/Blog/Node.js/images/image4.png" alt="Node.js">
+    ![Node.js](@source/Blog/Node.js/images/image4.png)
 </div>
 
 ## 常用命令

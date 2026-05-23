@@ -358,7 +358,7 @@ let isShow = ref(false)
 }
 </style>
 ```
-![alt text](images/image-19.png)
+![alt text](@source/notes/Vue3/images/image-19.png)
 可以看到我们的提示是在body的最下面。而不是在我们的组件中。在`<teleport to="body">`中指定的位置，也可以是选择器名字，例如`#app `等。
 
 ## suspense

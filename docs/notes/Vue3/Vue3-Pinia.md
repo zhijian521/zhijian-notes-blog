@@ -309,7 +309,7 @@ userStore.$subscribe((mutate,state) => {
 </script>
 ```
 打印输出：
-![alt text](images/images-17.png)
+![alt text](@source/notes/Vue3/images/images-17.png)
 
 ## 组合式示例
 

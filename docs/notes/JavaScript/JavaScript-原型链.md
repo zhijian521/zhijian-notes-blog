@@ -19,7 +19,7 @@ const a = {}
 console.log('a.prototype：',a.prototype) // undefined // 普通对象没有prototype属性
 console.log('a.__proto__：',a.__proto__) // Object {} // 指向构造函数Object的原型对象
 ```
-![alt text](images/image-11.png)
+![alt text](@source/notes/JavaScript/images/image-11.png)
 
 函数对象：
 ```javascript
@@ -29,7 +29,7 @@ console.log('test.__proto__：',test.__proto__)  // function ()  // 指向构造
 
 test.__proto__ === Function.prototype // true  test 是 Function 的实例对象
 ```
-![alt text](images/image-12.png)
+![alt text](@source/notes/JavaScript/images/image-12.png)
 
 > 属性 `__proto__` 是一个对象，有两个属性，分别是 `constructor` 和 `__proto__`，其中 `constructor` 指向构造函数，`__proto__` 指向原型对象。
 
@@ -85,7 +85,7 @@ console.log(person2.name);
 
 **用一张图表示构造函数和实例之间的关系：**
 
-![alt text](images/01-1.png)
+![alt text](@source/notes/JavaScript/images/01-1.png)
 
 - `Person`：构造函数
 - `Person.prototype`：实例原型
@@ -106,7 +106,7 @@ console.log(person.__proto__ === Person.prototype);
 
 更新 `person` 与构造函数 `Person` 和实例原型 `Person.prototype` 的关系图：
 
-![](images/01-2.png)
+![](@source/notes/JavaScript/images/01-2.png)
 
 实例对象与构造函数都可以指向原型
 
@@ -124,7 +124,7 @@ console.log(Person === Person.prototype.constructor);
 
 因此再次更新 `person` 与构造函数 `Person` 和实例原型 `Person.prototype` 的关系图：
 
-![](images/01-3.png)
+![](@source/notes/JavaScript/images/01-3.png)
 
 ```javascript
 //因此可知
@@ -171,7 +171,7 @@ console.log(obj.name); //"Yevin"
 
 更新关系图：
 
-![](images/01-4.png)
+![](@source/notes/JavaScript/images/01-4.png)
 
 ## 原型链
 
@@ -191,7 +191,7 @@ console.log(Object.prototype.__proto__ === null); // true
 
 最后更新关系图：
 
-![](images/01-5.png)
+![](@source/notes/JavaScript/images/01-5.png)
 
 图中相互关联的原型组成的链状结构就是原型链，也就是红色这条线
 

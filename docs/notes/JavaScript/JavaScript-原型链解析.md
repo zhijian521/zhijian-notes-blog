@@ -30,7 +30,7 @@ console.log(Person.prototype) // object {constructor: ƒ Person(), <prototype>: 
 const person = new Person()
 console.log(person.prototype) // undefined
 ```
-![alt text](images/image-13.png)
+![alt text](@source/notes/JavaScript/images/image-13.png)
 `Person.prototype` 是一个对象，它通常包含以下两个属性：
 
 -   `constructor`：`constructor` 属性指向创建该原型对象的构造函数。在上面例子中， `Person.prototype.constructor` 将指向 `Person`。
@@ -47,7 +47,7 @@ function Person() {}
 console.log(Person.prototype.__proto__ === Object.prototype) // true
 ```
 用图表示如下：
-![alt text](images/image-15.png)
+![alt text](@source/notes/JavaScript/images/image-15.png)
 
 ### `__proto__`
 
@@ -60,7 +60,7 @@ const person = new Person()
 console.log(Person.__proto__)  // function () { [native code] }
 console.log(person.__proto__) // object {constructor: ƒ Person(), <prototype>: Object}
 ```
-![alt text](images/image-14.png)
+![alt text](@source/notes/JavaScript/images/image-14.png)
 
 如上，`Person.__proto__` 是一个函数对象，它指向 `Function.prototype`，因为所有函数最终都继承自 `Function`。 也就是说，Perosn 是由 `Function` 构造函数创建的一个实例。
 ```js
@@ -72,7 +72,7 @@ console.log(Person.__proto__ === Function.prototype) // true
 console.log(person.__proto__ === Person.prototype) // true
 ```
 更新图表示如下：
-![alt text](images/image-16.png)
+![alt text](@source/notes/JavaScript/images/image-16.png)
 
 
 ### `constructor`
@@ -90,7 +90,7 @@ console.log(Person.prototype.constructor === Person) // true
 
 更新图表如下：
 
-![alt text](images/image-17.png)
+![alt text](@source/notes/JavaScript/images/image-17.png)
 
 ## Function
 
@@ -109,11 +109,11 @@ console.log(Function.__proto__)
 console.log(Function.__proto__ == Function.prototype) // true
 console.log(Function.prototype.__proto__ === Object.prototype) // true
 ```
-![alt text](images/image-18.png)
+![alt text](@source/notes/JavaScript/images/image-18.png)
 
 我们更新一下图表：
 
-![alt text](images/image-19.png)
+![alt text](@source/notes/JavaScript/images/image-19.png)
 
 
  `Function.prototype` 也有一个 `__proto__` 属性，它指向 `Object.prototype`，因为所有对象最终都继承自 `Object`。
@@ -121,7 +121,7 @@ console.log(Function.prototype.__proto__ === Object.prototype) // true
 console.log(Function.prototype.__proto__ === Object.prototype) // true
 ```
 更新图表如下：
-![alt text](images/image-22.png)
+![alt text](@source/notes/JavaScript/images/image-22.png)
 
 ## Object
 
@@ -145,11 +145,11 @@ console.log(person.__proto__.__proto__ === Object.prototype) // true
 console.log(Object.__proto__)
 console.log(Object.__proto__ === Function.prototype) // true
 ```
-![alt text](images/image-20.png)
+![alt text](@source/notes/JavaScript/images/image-20.png)
 
 我们更新一下图表：
 
-![alt text](images/image-21.png)
+![alt text](@source/notes/JavaScript/images/image-21.png)
 
 
 ## 总结

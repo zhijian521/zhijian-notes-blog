@@ -29,7 +29,7 @@ new Vue({
 页面效果：
 
 <div style="text-align: center; margin: 12px 20px;">
-    <img src="@source/Blog/Vue2/images/image3.png" alt="Node.js">
+    ![Node.js](@source/Blog/Vue2/images/image3.png)
 </div>
 
 现在我们需要将所有引入的 CSS 文件打包成一个单独的 CSS 文件，并把这个文件链接到 HTML 模板中。具体实现方式如下。
@@ -64,7 +64,7 @@ module.exports = {
 实现效果：
 
 <div style="text-align: center; margin: 12px 20px;">
-    <img src="@source/Blog/Vue2/images/image4.png" alt="Node.js">
+    ![Node.js](@source/Blog/Vue2/images/image4.png)
 </div>
 
 

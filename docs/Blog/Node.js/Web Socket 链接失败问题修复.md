@@ -22,4 +22,4 @@ tags:
 
 而链接其他环境时，连接的是其他端口，所以需要在防火墙中开放该端口。或者关闭防火墙。
 
-![alt text](./images/image14.png)
+![alt text](@source/Blog/Node.js/images/image14.png)

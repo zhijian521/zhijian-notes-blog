@@ -67,5 +67,5 @@ export default defineUserConfig({
 ## 测试结果
 
 <div style="text-align: center; margin: 12px 40px;">
-    <img style="border-radius: 12px;" src="@source/Blog/网站服务/images/image25.png" alt="PNG">
+    <img style="border-radius: 12px;" src="@source/Blog/网站服务/images/image25.png" alt="PNG" />
 </div>

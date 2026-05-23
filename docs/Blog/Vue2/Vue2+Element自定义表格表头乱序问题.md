@@ -162,7 +162,7 @@ export default {
 
 
 <div style="text-align: center; margin: 12px 20px;">
-    <img style="border-radius:12px;" src="@source/Blog/Vue2/images/image5.png" alt="Node.js">
+    <img style="border-radius:12px;" src="@source/Blog/Vue2/images/image5.png" alt="Node.js" />
 </div>
 
 ## 优化后代码
@@ -190,7 +190,7 @@ export default {
 ```
 
 <div style="text-align: center; margin: 12px 20px;">
-    <img style="border-radius:12px;"  src="@source/Blog/Vue2/images/image6.png" alt="Node.js">
+    <img style="border-radius:12px;"  src="@source/Blog/Vue2/images/image6.png" alt="Node.js" />
 </div>
 
 ## 总结

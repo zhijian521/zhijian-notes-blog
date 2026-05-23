@@ -15,7 +15,7 @@ Node.js是一个基于Chrome V8引擎的JavaScript运行环境，它允许开发
 
 架构图：
 
-![alt text](images/image5.png)
+![alt text](@source/notes/Node.js/images/image5.png)
 
 ## V8引擎
 

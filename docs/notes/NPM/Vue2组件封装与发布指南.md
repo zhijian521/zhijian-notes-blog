@@ -22,7 +22,7 @@ vue create my-app
 新建 `package/vueTimeAxisDemo.vue`
 
 <div style="text-align: center; margin: 12px 20px;">
-    <img style="border-radius:12px;" src="@source/notes/NPM/images/image1.png" alt="PNG">
+    <img style="border-radius:12px;" src="@source/notes/NPM/images/image1.png" alt="PNG" />
 </div>
 
 ## 加载组件 - Vue 插件模式
@@ -76,7 +76,7 @@ npm init -y
 ```
 
 <div style="text-align: center; margin: 12px 20px;">
-    <img style="border-radius:12px;" src="@source/notes/NPM/images/image2.png" alt="PNG">
+    <img style="border-radius:12px;" src="@source/notes/NPM/images/image2.png" alt="PNG" />
 </div>
 
 注册 `npmjs` 官网账号
