@@ -1,0 +1,334 @@
+import { getDb } from '@/lib/db';
+import type { ResultSetHeader, RowDataPacket } from 'mysql2';
+
+export type PostStatus = 'draft' | 'published';
+
+export interface Post {
+  id: number;
+  slug: string;
+  title: string;
+  summary: string;
+  content: string;
+  status: PostStatus;
+  publishedAt: string | null;
+  updatedAt: string | null;
+}
+
+export interface UpdatePostInput {
+  slug: string;
+  title: string;
+  summary: string;
+  content: string;
+  status: PostStatus;
+  publishedAt: string | null;
+}
+
+export interface CreatePostInput {
+  slug: string;
+  title: string;
+  summary: string;
+  content: string;
+}
+
+interface ReadPostsOptions {
+  includeDrafts: boolean;
+  id?: number;
+  slug?: string;
+}
+
+interface PostRow extends RowDataPacket {
+  id: number;
+  slug: string;
+  title: string;
+  summary: string | null;
+  content: string | null;
+  status: PostStatus;
+  published_at: string | null;
+  updated_at: string | null;
+}
+
+// 当数据库未连接时，前台仍可依靠这组示例数据预览页面结构与样式。
+const FALLBACK_POSTS: Post[] = [
+  {
+    id: 1,
+    slug: 'build-a-next-fullstack-personal-site',
+    title: '先把博客搭起来，再把它长成你的个人网站',
+    summary: '用 Next.js 自带的页面、接口和服务端能力，先把博客做好，后续再接备忘录、导航和作品页。',
+    content: [
+      '对个人网站来说，最核心的是内容持续发布，而不是一开始就把系统拆得很重。',
+      '把博客、后台管理和接口放进同一个 Next.js 项目里，开发和部署路径都会更短，也更适合个人长期维护。',
+      '等博客稳定后，再逐步补充备忘录、导航首页、项目陈列和关于页，会比一开始铺太大更从容。',
+    ].join('\n\n'),
+    status: 'published',
+    publishedAt: '2026-05-24 09:30:00',
+    updatedAt: '2026-05-24 09:30:00',
+  },
+  {
+    id: 2,
+    slug: 'why-self-hosted-admin-can-be-simpler',
+    title: '为什么个人站的后台，自己做反而更轻',
+    summary: '内容模型稳定时，自己做一个轻后台，通常会比引入额外 CMS 更贴近需求，也更方便部署。',
+    content: [
+      '博客后台最常见的需求就是登录、查看文章、修改文章和发布状态控制，这些能力并不复杂。',
+      '当页面结构、字段模型和权限边界都很清晰时，直接在 Next.js 里封装接口，会有更高的掌控感。',
+      '这样后续扩展新模块时，也可以继续沿用同一套页面、接口和数据库连接方式，不需要维护两套系统。',
+    ].join('\n\n'),
+    status: 'published',
+    publishedAt: '2026-05-20 20:15:00',
+    updatedAt: '2026-05-20 20:15:00',
+  },
+];
+
+export async function getPublishedPosts(): Promise<Post[]> {
+  const posts = await readPostsFromDatabase({ includeDrafts: false });
+
+  if (posts.length > 0) {
+    return posts;
+  }
+
+  return FALLBACK_POSTS.filter((post) => post.status === 'published');
+}
+
+export async function getAllPosts(): Promise<Post[]> {
+  const posts = await readPostsFromDatabase({ includeDrafts: true });
+
+  if (posts.length > 0) {
+    return posts;
+  }
+
+  return FALLBACK_POSTS;
+}
+
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  const posts = await readPostsFromDatabase({ includeDrafts: false, slug });
+
+  if (posts.length > 0) {
+    return posts[0] ?? null;
+  }
+
+  return FALLBACK_POSTS.find((post) => post.slug === slug && post.status === 'published') ?? null;
+}
+
+export async function getPostById(id: number): Promise<Post | null> {
+  const posts = await readPostsFromDatabase({ includeDrafts: true, id });
+
+  if (posts.length > 0) {
+    return posts[0] ?? null;
+  }
+
+  return FALLBACK_POSTS.find((post) => post.id === id) ?? null;
+}
+
+/**
+ * 更新指定文章。
+ * 这里保留在 lib 层统一处理数据库字段映射，避免 API route 直接拼 SQL。
+ */
+export async function updatePostById(id: number, input: UpdatePostInput): Promise<Post | null> {
+  const db = getDb();
+
+  if (!db) {
+    return null;
+  }
+
+  const publishedAt = normalizePublishedAt(input.publishedAt, input.status);
+
+  try {
+    const [result] = await db.execute<ResultSetHeader>(
+      `
+        UPDATE posts
+        SET slug = ?, title = ?, summary = ?, content = ?, status = ?, published_at = ?, updated_at = NOW()
+        WHERE id = ?
+      `,
+      [input.slug, input.title, input.summary, input.content, input.status, publishedAt, id],
+    );
+
+    if (result.affectedRows === 0) {
+      return null;
+    }
+
+    return getPostById(id);
+  } catch (error) {
+    console.error('Failed to update post.', error);
+    return null;
+  }
+}
+
+/**
+ * 创建草稿文章。
+ * 新文章默认先落为 draft，降低后台误发布风险。
+ */
+export async function createPost(input: CreatePostInput): Promise<Post | null> {
+  const db = getDb();
+
+  if (!db) {
+    return null;
+  }
+
+  try {
+    const [result] = await db.execute<ResultSetHeader>(
+      `
+        INSERT INTO posts (slug, title, summary, content, status, published_at, created_at, updated_at)
+        VALUES (?, ?, ?, ?, 'draft', NULL, NOW(), NOW())
+      `,
+      [input.slug, input.title, input.summary, input.content],
+    );
+
+    return getPostById(result.insertId);
+  } catch (error) {
+    console.error('Failed to create post.', error);
+    return null;
+  }
+}
+
+export function splitPostContent(content: string): string[] {
+  return content
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
+
+// 前台阅读页使用更偏内容展示的日期格式。
+export function formatPostDate(value: string | null): string {
+  if (!value) {
+    return '未发布';
+  }
+
+  const normalized = value.replace(' ', 'T');
+  const date = new Date(normalized);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+}
+
+// 后台与详情页使用包含时间的格式，方便区分最近更新节奏。
+export function formatPostDateTime(value: string | null): string {
+  if (!value) {
+    return '未设置';
+  }
+
+  const normalized = value.replace(' ', 'T');
+  const date = new Date(normalized);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date);
+}
+
+// `datetime-local` 需要 `YYYY-MM-DDTHH:mm` 形式，这里统一转换。
+export function toDateTimeLocalValue(value: string | null): string {
+  if (!value) {
+    return '';
+  }
+
+  return value.replace(' ', 'T').slice(0, 16);
+}
+
+/**
+ * 统一读取文章数据。
+ * includeDrafts、slug、id 这些条件都在这一层组合，避免查询逻辑散落到多个 route 里。
+ */
+async function readPostsFromDatabase(options: ReadPostsOptions): Promise<Post[]> {
+  const db = getDb();
+
+  if (!db) {
+    return [];
+  }
+
+  const conditions: string[] = [];
+  const values: Array<number | string> = [];
+
+  if (!options.includeDrafts) {
+    conditions.push('status = ?');
+    values.push('published');
+  }
+
+  if (typeof options.id === 'number') {
+    conditions.push('id = ?');
+    values.push(options.id);
+  }
+
+  if (options.slug) {
+    conditions.push('slug = ?');
+    values.push(options.slug);
+  }
+
+  const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+  try {
+    const [rows] = await db.query<PostRow[]>(
+      `
+        SELECT
+          id,
+          slug,
+          title,
+          summary,
+          content,
+          status,
+          DATE_FORMAT(published_at, '%Y-%m-%d %H:%i:%s') AS published_at,
+          DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') AS updated_at
+        FROM posts
+        ${whereClause}
+        ORDER BY published_at IS NULL, published_at DESC, id DESC
+      `,
+      values,
+    );
+
+    return rows.map((row) => ({
+      id: row.id,
+      slug: row.slug,
+      title: row.title,
+      summary: row.summary?.trim() || '这篇文章还没有摘要，等你来补上一段引子。',
+      content: row.content?.trim() || '这篇文章还没有正文内容。',
+      status: row.status,
+      publishedAt: row.published_at,
+      updatedAt: row.updated_at,
+    }));
+  } catch (error) {
+    console.error('Failed to read posts.', error);
+    return [];
+  }
+}
+
+// 发布时间为空时，根据状态决定是否自动补当前时间。
+function normalizePublishedAt(value: string | null, status: PostStatus): string | null {
+  if (!value && status === 'draft') {
+    return null;
+  }
+
+  if (!value && status === 'published') {
+    return formatSqlDate(new Date());
+  }
+
+  if (!value) {
+    return null;
+  }
+
+  return value.replace('T', ' ') + ':00';
+}
+
+// 将 JS Date 规范化成 MySQL DATETIME 字符串。
+function formatSqlDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  const hours = `${date.getHours()}`.padStart(2, '0');
+  const minutes = `${date.getMinutes()}`.padStart(2, '0');
+  const seconds = `${date.getSeconds()}`.padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}

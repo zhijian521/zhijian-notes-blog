@@ -1,5 +1,10 @@
+.next
 node_modules
-.cache
-.temp
-.idea
+.env
+.env.local
+npm-debug.log*
+coverage
 dist
+tsconfig.tsbuildinfo
+.next-start.out.log
+.next-start.err.log

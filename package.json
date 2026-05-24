@@ -1,27 +1,31 @@
 {
-  "name": "yevin-notes-blog",
-  "type": "module",
-  "version": "1.0.0",
-  "description": "耶温笔记-耶温博客-学习记录",
-  "author": "Yevin Yu <yuwb0521@outlook.com>",
-  "license": "MIT",
-  "engines": {
-    "node": "^18.20.0 || >=20.0.0"
-  },
+  "name": "zhijian-site",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:dev-clean": "vuepress dev docs --clean-cache --clean-temp",
-    "docs:build": "vuepress build docs --clean-cache --clean-temp",
-    "docs:preview": "http-server docs/.vuepress/dist",
-    "vp-update": "npx vp-update"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.16.0",
+    "mysql2": "3.15.3",
+    "next": "15.3.2",
+    "postcss": "^8.5.15",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
-    "@vuepress/bundler-vite": "latest",
-    "vuepress": "latest",
-    "vuepress-theme-plume": "latest",
-    "http-server": "^14.1.1",
-    "vue": "^3.5.12",
-    "sass-embedded": "^1.80.6",
-    "typescript": "^5.6.3"
+    "@types/node": "22.15.30",
+    "@types/react": "19.1.6",
+    "@types/react-dom": "19.1.5",
+    "typescript": "5.8.3"
   }
 }
