@@ -34,8 +34,23 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
-    return <button className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+  ({ asChild = false, className, variant, size, ...props }, ref) => {
+    const classes = cn(buttonVariants({ variant, size, className }));
+
+    if (asChild) {
+      const child = React.Children.only(props.children) as React.ReactElement<{ className?: string }>;
+
+      if (!React.isValidElement(child)) {
+        return null;
+      }
+
+      return React.cloneElement(child, {
+        ...props,
+        className: cn(classes, child.props.className),
+      });
+    }
+
+    return <button className={classes} ref={ref} {...props} />;
   },
 );
 Button.displayName = 'Button';
