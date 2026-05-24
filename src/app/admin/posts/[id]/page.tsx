@@ -6,30 +6,31 @@ import { isAdminAuthenticated } from '@/lib/auth';
 import { getPostById } from '@/lib/posts';
 
 interface AdminPostDetailPageProps {
-  params: Promise<{
-    id: string;
-  }>;
+    params: Promise<{
+        id: string;
+    }>;
 }
 
+/*== 后台文章编辑页：按 ID 加载指定文章并使用编辑模式表单。 ==*/
 export default async function AdminPostDetailPage({ params }: AdminPostDetailPageProps) {
-  const authenticated = await isAdminAuthenticated();
+    const authenticated = await isAdminAuthenticated();
 
-  if (!authenticated) {
-    return <AdminLoginCard />;
-  }
+    if (!authenticated) {
+        return <AdminLoginCard />;
+    }
 
-  const { id } = await params;
-  const postId = Number(id);
+    const { id } = await params;
+    const postId = Number(id);
 
-  if (!Number.isInteger(postId) || postId <= 0) {
-    notFound();
-  }
+    if (!Number.isInteger(postId) || postId <= 0) {
+        notFound();
+    }
 
-  const post = await getPostById(postId);
+    const post = await getPostById(postId);
 
-  if (!post) {
-    notFound();
-  }
+    if (!post) {
+        notFound();
+    }
 
-  return <PostEditorForm mode='edit' post={post} />;
+    return <PostEditorForm mode='edit' post={post} />;
 }
