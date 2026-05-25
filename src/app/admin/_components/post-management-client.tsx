@@ -43,7 +43,7 @@ export default function PostManagementClient({ initialPosts }: PostManagementCli
                 method: 'POST',
             });
 
-            window.location.href = APP_ROUTES.admin;
+            window.location.href = APP_ROUTES.adminLogin;
         });
     }
 

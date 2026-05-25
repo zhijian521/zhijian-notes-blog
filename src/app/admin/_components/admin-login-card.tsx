@@ -1,120 +1,234 @@
 'use client';
 
-import { LockKeyhole } from 'lucide-react';
-import { useState, useTransition } from 'react';
+import { CircleHelp, KeyRound, Lock, User } from 'lucide-react';
+import { useEffect, useState, useTransition } from 'react';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { APP_ROUTES, API_ROUTES, STORAGE_KEYS } from '@/lib/site';
 
-/*== 后台登录卡片：独立于管理台的登录表单，包含左右分栏的品牌展示与表单区域。 ==*/
+interface LoginFormState {
+    password: string;
+    remember: boolean;
+    username: string;
+}
+
+interface RememberedLoginPayload {
+    password: string;
+    username: string;
+}
+
+const INITIAL_FORM: LoginFormState = {
+    password: '',
+    remember: false,
+    username: '',
+};
+
+const SUPPORT_ACTIONS = [
+    {
+        icon: KeyRound,
+        label: 'SSO 登录',
+    },
+    {
+        icon: CircleHelp,
+        label: '获取帮助',
+    },
+] as const;
+
+/*== 后台登录页主体：使用直角视觉，同时支持本地记住密码回填。 ==*/
 export default function AdminLoginCard() {
-    const [loginForm, setLoginForm] = useState({
-        username: 'admin',
-        password: '',
-    });
+    const [loginForm, setLoginForm] = useState(INITIAL_FORM);
     const [message, setMessage] = useState<string | null>(null);
     const [isPending, startTransition] = useTransition();
+
+    useEffect(() => {
+        try {
+            const savedValue = window.localStorage.getItem(STORAGE_KEYS.adminRememberedLogin);
+
+            if (!savedValue) {
+                return;
+            }
+
+            const savedLogin = JSON.parse(savedValue) as RememberedLoginPayload;
+
+            if (!savedLogin.username || !savedLogin.password) {
+                window.localStorage.removeItem(STORAGE_KEYS.adminRememberedLogin);
+                return;
+            }
+
+            setLoginForm({
+                password: savedLogin.password,
+                remember: true,
+                username: savedLogin.username,
+            });
+        } catch {
+            window.localStorage.removeItem(STORAGE_KEYS.adminRememberedLogin);
+        }
+    }, []);
+
+    function handleFieldChange<Key extends keyof LoginFormState>(key: Key, value: LoginFormState[Key]) {
+        setLoginForm((current) => ({
+            ...current,
+            [key]: value,
+        }));
+
+        if (key === 'remember' && value === false) {
+            window.localStorage.removeItem(STORAGE_KEYS.adminRememberedLogin);
+        }
+    }
+
+    function persistRememberedLogin() {
+        if (loginForm.remember) {
+            window.localStorage.setItem(
+                STORAGE_KEYS.adminRememberedLogin,
+                JSON.stringify({
+                    password: loginForm.password,
+                    username: loginForm.username.trim(),
+                } satisfies RememberedLoginPayload),
+            );
+            return;
+        }
+
+        window.localStorage.removeItem(STORAGE_KEYS.adminRememberedLogin);
+    }
 
     function handleLoginSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setMessage(null);
 
         startTransition(async () => {
-            const response = await fetch('/api/admin/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginForm),
-            });
+            try {
+                const response = await fetch(API_ROUTES.adminLogin, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        password: loginForm.password,
+                        username: loginForm.username.trim(),
+                    }),
+                });
 
-            const payload = await response.json();
+                const payload = await response.json();
 
-            if (!response.ok) {
-                setMessage(payload.message || '登录失败，请检查账号和密码。');
-                return;
+                if (!response.ok) {
+                    setMessage(payload.message || '登录失败，请检查账号和密码。');
+                    return;
+                }
+
+                persistRememberedLogin();
+                window.location.href = APP_ROUTES.admin;
+            } catch {
+                setMessage('登录请求失败，请稍后重试。');
             }
-
-            window.location.reload();
         });
     }
 
     return (
-        <div className='mx-auto max-w-2xl'>
-            <Card className='admin-panel overflow-hidden border-slate-200 bg-white/95 shadow-[0_20px_48px_rgba(15,23,42,0.08)]'>
-                <CardContent className='grid gap-0 p-0 md:grid-cols-[minmax(0,0.95fr)_minmax(320px,1.05fr)]'>
-                    <div className='bg-[var(--admin-nav)] px-7 py-8 text-white md:px-8 md:py-10'>
-                        <Badge className='border-white/10 bg-white/10 text-white' variant='secondary'>
-                            Zhijian Admin
-                        </Badge>
-                        <div className='mt-6 space-y-4'>
-                            <div className='flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10'>
-                                <LockKeyhole className='h-5 w-5' />
+        <main className='admin-login-page'>
+            <div aria-hidden='true' className='admin-login-texture'>
+                <div className='admin-login-texture-glow' />
+            </div>
+
+            <section className='admin-login-shell'>
+                <header className='admin-login-brand'>
+                    <div className='admin-login-logo-wrap'>
+                        <img
+                            alt='Zhijian Logo'
+                            className='admin-login-logo'
+                            decoding='async'
+                            height='84'
+                            src='/images/admin-login-logo.png'
+                            width='84'
+                        />
+                    </div>
+                    <h1 className='admin-login-title'>Zhijian Admin</h1>
+                </header>
+
+                <section className='admin-login-card' aria-label='后台登录表单'>
+                    <form className='admin-login-form' onSubmit={handleLoginSubmit}>
+                        <div className='admin-login-fieldset'>
+                            <label className='admin-login-label' htmlFor='username'>
+                                用户名
+                            </label>
+                            <div className='admin-login-input-wrap'>
+                                <User className='admin-login-input-icon' />
+                                <input
+                                    autoComplete='username'
+                                    className='admin-login-input'
+                                    id='username'
+                                    onChange={(event) => {
+                                        handleFieldChange('username', event.target.value);
+                                    }}
+                                    placeholder='请输入您的用户名'
+                                    required
+                                    type='text'
+                                    value={loginForm.username}
+                                />
                             </div>
-                            <h1 className='font-[var(--font-ui)] text-3xl font-semibold tracking-tight'>登录管理系统</h1>
-                            <p className='text-sm leading-7 text-slate-300'>
-                                后台采用独立管理台结构。登录后即可进入文章管理、文章编辑和系统设置页面。
-                            </p>
                         </div>
+
+                        <div className='admin-login-fieldset'>
+                            <label className='admin-login-label' htmlFor='password'>
+                                密码
+                            </label>
+                            <div className='admin-login-input-wrap'>
+                                <Lock className='admin-login-input-icon' />
+                                <input
+                                    autoComplete={loginForm.remember ? 'current-password' : 'off'}
+                                    className='admin-login-input'
+                                    id='password'
+                                    onChange={(event) => {
+                                        handleFieldChange('password', event.target.value);
+                                    }}
+                                    placeholder='请输入您的密码'
+                                    required
+                                    type='password'
+                                    value={loginForm.password}
+                                />
+                            </div>
+                        </div>
+
+                        <label className='admin-login-checkbox-row' htmlFor='remember'>
+                            <input
+                                checked={loginForm.remember}
+                                className='admin-login-checkbox'
+                                id='remember'
+                                onChange={(event) => {
+                                    handleFieldChange('remember', event.target.checked);
+                                }}
+                                type='checkbox'
+                            />
+                            <span>记住密码</span>
+                        </label>
+
+                        <button className='admin-login-submit' disabled={isPending} type='submit'>
+                            {isPending ? '登录中...' : '登录'}
+                        </button>
+
+                        <p aria-live='polite' className='admin-login-message'>
+                            {message}
+                        </p>
+                    </form>
+
+                    <div className='admin-login-divider' aria-hidden='true'>
+                        <span className='admin-login-divider-line' />
+                        <span className='admin-login-divider-text'>或通过其他方式</span>
+                        <span className='admin-login-divider-line' />
                     </div>
 
-                    <div className='p-7 md:p-8'>
-                        <CardHeader className='space-y-3 px-0 pt-0'>
-                            <CardTitle className='text-2xl text-slate-950'>管理员登录</CardTitle>
-                            <CardDescription className='leading-7'>
-                                使用 `.env.local` 中配置的管理员账号和密码登录。登录成功后将继续停留在当前后台功能页面。
-                            </CardDescription>
-                        </CardHeader>
-
-                        <CardContent className='px-0 pb-0 pt-2'>
-                            <form className='space-y-5' onSubmit={handleLoginSubmit}>
-                                <div className='space-y-2'>
-                                    <Label htmlFor='username'>管理员账号</Label>
-                                    <Input
-                                        autoComplete='username'
-                                        className='admin-input'
-                                        id='username'
-                                        onChange={(event) => {
-                                            setLoginForm((current) => ({
-                                                ...current,
-                                                username: event.target.value,
-                                            }));
-                                        }}
-                                        placeholder='请输入管理员账号'
-                                        value={loginForm.username}
-                                    />
-                                </div>
-
-                                <div className='space-y-2'>
-                                    <Label htmlFor='password'>管理员密码</Label>
-                                    <Input
-                                        autoComplete='current-password'
-                                        className='admin-input'
-                                        id='password'
-                                        onChange={(event) => {
-                                            setLoginForm((current) => ({
-                                                ...current,
-                                                password: event.target.value,
-                                            }));
-                                        }}
-                                        placeholder='请输入管理员密码'
-                                        type='password'
-                                        value={loginForm.password}
-                                    />
-                                </div>
-
-                                <Button className='w-full rounded-xl' disabled={isPending} type='submit'>
-                                    {isPending ? '登录中...' : '登录后台'}
-                                </Button>
-                                {message ? <p className='text-sm text-slate-500'>{message}</p> : null}
-                            </form>
-                        </CardContent>
+                    <div className='admin-login-support-grid'>
+                        {SUPPORT_ACTIONS.map(({ icon: Icon, label }) => (
+                            <button className='admin-login-support-button' key={label} type='button'>
+                                <Icon className='admin-login-support-icon' />
+                                <span>{label}</span>
+                            </button>
+                        ))}
                     </div>
-                </CardContent>
-            </Card>
-        </div>
+                </section>
+            </section>
+
+            <footer className='admin-login-footer'>
+                <span className='admin-login-copyright'>© 2024 Zhijian. All rights reserved.</span>
+            </footer>
+        </main>
     );
 }

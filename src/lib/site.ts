@@ -11,6 +11,7 @@ export const APP_ROUTES = {
     home: '/',
     blog: '/blog',
     admin: '/admin',
+    adminLogin: '/admin/login',
     adminPosts: '/admin/posts',
     adminPostCreate: '/admin/posts/new',
     adminSettings: '/admin/settings',
@@ -20,6 +21,10 @@ export const API_ROUTES = {
     adminLogin: '/api/admin/login',
     adminLogout: '/api/admin/logout',
     adminPosts: '/api/admin/posts',
+} as const;
+
+export const STORAGE_KEYS = {
+    adminRememberedLogin: 'zhijian_admin_remembered_login',
 } as const;
 
 /*== 导航项基础配置，match 控制高亮匹配策略。 ==*/

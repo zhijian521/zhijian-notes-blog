@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import { LogOut, Plus, UserCircle2 } from 'lucide-react';
+import { useTransition } from 'react';
 
-import { ADMIN_NAV_ITEMS, APP_ROUTES, SITE_METADATA } from '@/lib/site';
+import { ADMIN_NAV_ITEMS, API_ROUTES, APP_ROUTES, SITE_METADATA } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 interface AdminShellProps {
@@ -9,8 +12,20 @@ interface AdminShellProps {
     currentPath: string;
 }
 
-/*== 后台管理台外壳：固定左侧导航栏 + 右侧内容区，通过 currentPath 控制菜单高亮。 ==*/
+/*== 后台管理台外壳：固定左侧导航栏和右侧内容区域，并在壳层统一处理退出登录。 ==*/
 export default function AdminShell({ children, currentPath }: AdminShellProps) {
+    const [isPending, startTransition] = useTransition();
+
+    function handleLogout() {
+        startTransition(async () => {
+            await fetch(API_ROUTES.adminLogout, {
+                method: 'POST',
+            });
+
+            window.location.href = APP_ROUTES.adminLogin;
+        });
+    }
+
     return (
         <main className='relative min-h-screen'>
             <aside className='admin-stitch-sidebar fixed left-0 top-0 flex flex-col px-4 py-6'>
@@ -27,7 +42,7 @@ export default function AdminShell({ children, currentPath }: AdminShellProps) {
                 <div className='mb-6 px-2'>
                     <Link
                         className={
-                            'flex w-full items-center justify-center gap-2 rounded-lg ' +
+                            'flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg ' +
                             'bg-[var(--primary)] px-4 py-2 text-sm font-medium ' +
                             'text-white shadow-sm transition hover:opacity-95'
                         }
@@ -46,7 +61,7 @@ export default function AdminShell({ children, currentPath }: AdminShellProps) {
                         return (
                             <Link
                                 className={cn(
-                                    'flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200',
+                                    'flex cursor-pointer items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200',
                                     isActive ? 'admin-stitch-nav-active' : 'admin-stitch-nav-item',
                                 )}
                                 href={item.href}
@@ -60,16 +75,18 @@ export default function AdminShell({ children, currentPath }: AdminShellProps) {
                 </nav>
 
                 <div className='mt-auto space-y-1 border-t border-[var(--border)] pt-3'>
-                    <button className='admin-stitch-nav-item flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition' type='button'>
+                    <button className='admin-stitch-nav-item flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-left text-sm transition' type='button'>
                         <UserCircle2 className='h-4 w-4' />
                         <span>个人资料</span>
                     </button>
                     <button
-                        className='admin-stitch-nav-item flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition hover:text-[var(--destructive)]'
+                        className='admin-stitch-nav-item flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-left text-sm transition hover:text-[var(--destructive)] disabled:cursor-not-allowed disabled:opacity-60'
+                        disabled={isPending}
+                        onClick={handleLogout}
                         type='button'
                     >
                         <LogOut className='h-4 w-4' />
-                        <span>退出登录</span>
+                        <span>{isPending ? '退出中...' : '退出登录'}</span>
                     </button>
                 </div>
             </aside>

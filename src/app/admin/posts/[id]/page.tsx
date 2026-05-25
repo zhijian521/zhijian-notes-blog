@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import AdminLoginCard from '@/app/admin/_components/admin-login-card';
 import PostEditorForm from '@/app/admin/_components/post-editor-form';
-import { isAdminAuthenticated } from '@/lib/auth';
 import { getPostById } from '@/lib/posts';
 
 interface AdminPostDetailPageProps {
@@ -13,12 +11,6 @@ interface AdminPostDetailPageProps {
 
 /*== 后台文章编辑页：按 ID 加载指定文章并使用编辑模式表单。 ==*/
 export default async function AdminPostDetailPage({ params }: AdminPostDetailPageProps) {
-    const authenticated = await isAdminAuthenticated();
-
-    if (!authenticated) {
-        return <AdminLoginCard />;
-    }
-
     const { id } = await params;
     const postId = Number(id);
 

@@ -1,19 +1,11 @@
 import { Shield, Wrench } from 'lucide-react';
 
-import AdminLoginCard from '@/app/admin/_components/admin-login-card';
 import AdminPageHeader from '@/app/admin/_components/admin-page-header';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { isAdminAuthenticated } from '@/lib/auth';
 
 /*== 后台设置页：展示登录权限说明和项目约定，便于维护者快速了解系统边界。 ==*/
 export default async function AdminSettingsPage() {
-    const authenticated = await isAdminAuthenticated();
-
-    if (!authenticated) {
-        return <AdminLoginCard />;
-    }
-
     return (
         <>
             <AdminPageHeader

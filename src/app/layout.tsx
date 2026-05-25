@@ -19,10 +19,12 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     const headersList = await headers();
     const currentPath = headersList.get('x-current-path') || '/';
     const isAdminRoute = currentPath.startsWith('/admin');
+    const isAdminLoginRoute = currentPath === '/admin/login';
+    const appName = isAdminLoginRoute ? 'admin-login' : isAdminRoute ? 'admin' : 'public';
 
     return (
         <html lang='zh-CN'>
-            <body data-app={isAdminRoute ? 'admin' : 'public'}>
+            <body data-app={appName}>
                 {isAdminRoute ? children : <PublicChrome currentPath={currentPath}>{children}</PublicChrome>}
             </body>
         </html>

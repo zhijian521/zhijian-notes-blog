@@ -1,20 +1,12 @@
 import Link from 'next/link';
 import { ArrowUpRight, Download, Edit3, Eye, FileText, MessageSquare } from 'lucide-react';
 
-import AdminLoginCard from '@/app/admin/_components/admin-login-card';
 import { Badge } from '@/components/ui/badge';
-import { isAdminAuthenticated } from '@/lib/auth';
 import { getAllPosts } from '@/lib/posts';
 import { APP_ROUTES } from '@/lib/site';
 
 /*== 后台概览页：展示文章统计数据和近期文章列表，未登录时显示登录卡片。 ==*/
 export default async function AdminPage() {
-    const authenticated = await isAdminAuthenticated();
-
-    if (!authenticated) {
-        return <AdminLoginCard />;
-    }
-
     const posts = await getAllPosts();
     const publishedPosts = posts.filter((post) => post.status === 'published');
     const draftPosts = posts.filter((post) => post.status === 'draft');
