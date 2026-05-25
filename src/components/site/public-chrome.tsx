@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, Search } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -7,11 +10,12 @@ import { cn } from '@/lib/utils';
 
 interface PublicChromeProps {
     children: React.ReactNode;
-    currentPath: string;
 }
 
-/*== 前台公共壳层：统一提供顶部导航、内容区和页脚。 通过 currentPath 控制导航高亮状态。 ==*/
-export default function PublicChrome({ children, currentPath }: PublicChromeProps) {
+/*== 前台公共壳层：统一提供顶部导航、内容区和页脚，并根据当前路由实时更新导航高亮。 ==*/
+export default function PublicChrome({ children }: PublicChromeProps) {
+    const pathname = usePathname();
+
     return (
         <div className='flex min-h-screen flex-col bg-[var(--background)] text-[var(--foreground)]'>
             <header className='sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[rgba(251,249,249,0.9)] backdrop-blur-md'>
@@ -23,7 +27,7 @@ export default function PublicChrome({ children, currentPath }: PublicChromeProp
 
                         <nav aria-label='站点主导航' className='hidden items-center gap-10 md:flex'>
                             {PUBLIC_NAV_ITEMS.map((item) => {
-                                const isActive = item.match === 'exact' ? currentPath === item.href : currentPath.startsWith(item.href);
+                                const isActive = item.match === 'exact' ? pathname === item.href : pathname.startsWith(item.href);
 
                                 return (
                                     <Link

@@ -9,7 +9,7 @@ interface AdminLayoutProps {
     children: React.ReactNode;
 }
 
-/*== 后台布局：从请求头读取当前路径，包裹 AdminShell 统一后台导航。 ==*/
+/*== 后台布局：登录页跳过后台壳层，其余后台页面统一做鉴权与侧边导航包裹。 ==*/
 export default async function AdminLayout({ children }: AdminLayoutProps) {
     const headersList = await headers();
     const currentPath = headersList.get('x-current-path') || '/admin';
@@ -25,5 +25,5 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
         redirect(APP_ROUTES.adminLogin);
     }
 
-    return <AdminShell currentPath={currentPath}>{children}</AdminShell>;
+    return <AdminShell>{children}</AdminShell>;
 }

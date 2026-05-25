@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 
-import PublicChrome from '@/components/site/public-chrome';
+import AppFrame from '@/components/site/app-frame';
 import { SITE_METADATA } from '@/lib/site';
 import './globals.css';
 
@@ -14,18 +13,12 @@ interface RootLayoutProps {
     children: React.ReactNode;
 }
 
-/*== 项目根布局，根据当前路径区分前台（PublicChrome）与后台（admin）视觉壳层。 ==*/
-export default async function RootLayout({ children }: RootLayoutProps) {
-    const headersList = await headers();
-    const currentPath = headersList.get('x-current-path') || '/';
-    const isAdminRoute = currentPath.startsWith('/admin');
-    const isAdminLoginRoute = currentPath === '/admin/login';
-    const appName = isAdminLoginRoute ? 'admin-login' : isAdminRoute ? 'admin' : 'public';
-
+/*== 项目根布局：交由客户端壳层根据当前路由分发前台与后台视觉结构。 ==*/
+export default function RootLayout({ children }: RootLayoutProps) {
     return (
         <html lang='zh-CN'>
-            <body data-app={appName}>
-                {isAdminRoute ? children : <PublicChrome currentPath={currentPath}>{children}</PublicChrome>}
+            <body data-app='public'>
+                <AppFrame>{children}</AppFrame>
             </body>
         </html>
     );
