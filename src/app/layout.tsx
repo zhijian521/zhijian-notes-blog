@@ -5,8 +5,11 @@ import { SITE_METADATA } from '@/lib/site';
 import './globals.css';
 
 export const metadata: Metadata = {
-    title: SITE_METADATA.title,
+    title: 'Zhijian',
     description: SITE_METADATA.description,
+    icons: {
+        icon: '/images/logo.png',
+    },
 };
 
 interface RootLayoutProps {

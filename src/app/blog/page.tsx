@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 
@@ -5,6 +6,10 @@ import { Button } from '@/components/ui/button';
 import { formatPostDate } from '@/lib/post-shared';
 import { getPublishedPosts } from '@/lib/posts';
 import styles from './page.module.css';
+
+export const metadata: Metadata = {
+    title: '文章 - Zhijian',
+};
 
 /*== 博客列表页：展示精选文章与全部已发布文章，按发布时间降序。 ==*/
 export default async function BlogListPage() {

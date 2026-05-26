@@ -1,9 +1,14 @@
+import type { Metadata } from "next";
 import Link from 'next/link';
 import { ArrowUpRight, Download, Edit3, Eye, FileText, MessageSquare } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { getAllPosts } from '@/lib/posts';
 import { APP_ROUTES } from '@/lib/site';
+
+export const metadata: Metadata = {
+    title: "Admin - Zhijian",
+};
 
 /*== 后台概览页：展示文章统计数据和近期文章列表，未登录时显示登录卡片。 ==*/
 export default async function AdminPage() {

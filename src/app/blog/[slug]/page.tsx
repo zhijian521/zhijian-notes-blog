@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { formatPostDateTime, splitPostContent } from '@/lib/post-shared';
@@ -7,6 +8,15 @@ interface BlogDetailPageProps {
     params: Promise<{
         slug: string;
     }>;
+}
+
+export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
+    const { slug } = await params;
+    const post = await getPostBySlug(slug);
+
+    return {
+        title: `${post?.title ?? '文章'} - Zhijian`,
+    };
 }
 
 export async function generateStaticParams() {

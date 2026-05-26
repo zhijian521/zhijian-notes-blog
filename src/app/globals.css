@@ -183,6 +183,29 @@ select {
 ::selection {
     background: rgba(182, 72, 43, 0.18);
 }
+/*== 滚动条 ==*/
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: var(--border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
 
 .public-shell {
     @apply mx-auto w-full max-w-7xl px-4 md:px-6;

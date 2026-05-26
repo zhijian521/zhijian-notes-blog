@@ -137,7 +137,7 @@ export default function AdminLoginCard() {
                             className={styles.logo}
                             decoding='async'
                             height='84'
-                            src='/images/admin-login-logo.png'
+                            src='/images/logo.png'
                             width='84'
                         />
                     </div>

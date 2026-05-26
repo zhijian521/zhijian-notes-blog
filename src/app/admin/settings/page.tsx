@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import { Shield, Wrench } from 'lucide-react';
 
 import AdminPageHeader from '@/app/admin/_components/admin-page-header';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+export const metadata: Metadata = {
+    title: "系统设置 - Zhijian",
+};
 
 /*== 后台设置页：展示登录权限说明和项目约定，便于维护者快速了解系统边界。 ==*/
 export default async function AdminSettingsPage() {

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, ArrowRight, BookOpen, Code2, Mail, Star } from 'lucide-react';
@@ -5,6 +6,10 @@ import { ArrowDown, ArrowRight, BookOpen, Code2, Mail, Star } from 'lucide-react
 import { formatPostDate } from '@/lib/post-shared';
 import { getPublishedPosts } from '@/lib/posts';
 import styles from './page.module.css';
+
+export const metadata: Metadata = {
+    title: 'Home - Zhijian',
+};
 
 /*== 首页：按 Stitch 首页结构组织为全屏首屏、个人信息、最新文章和开源项目四个主区域。 ==*/
 export default async function HomePage() {
@@ -37,7 +42,7 @@ export default async function HomePage() {
                     <div className={styles.profileCard}>
                         <div className={styles.avatarWrap}>
                             <div className={styles.avatarFrame}>
-                                <Image alt='Lin Zhi' className={styles.avatar} fill sizes='160px' src='/images/admin-login-logo.png' />
+                                <Image alt='Lin Zhi' className={styles.avatar} fill sizes='160px' src='/images/logo.png' />
                             </div>
                         </div>
 

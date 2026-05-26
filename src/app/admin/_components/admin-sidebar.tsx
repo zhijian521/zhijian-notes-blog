@@ -28,7 +28,7 @@ export default function AdminSidebar() {
     return (
         <aside className={styles.sidebar}>
             <div className={styles.brand}>
-                <Image alt='Zhijian Admin' className={styles.logo} height={52} priority src='/images/admin-login-logo.png' width={52} />
+                <Image alt='Zhijian Admin' className={styles.logo} height={52} priority src='/images/logo.png' width={52} />
                 <div className={styles.brandText}>
                     <h2 className={styles.brandTitle}>{SITE_METADATA.adminName}</h2>
                     <p className={styles.brandSubtitle}>Content Management</p>
