@@ -52,12 +52,14 @@ const EMPTY_FORM: EditorFormState = {
 export default function PostEditorForm({ mode, post }: PostEditorFormProps) {
     const [form, setForm] = useState<EditorFormState>(createFormState(post));
     const [message, setMessage] = useState<string | null>(null);
+    const [isError, setIsError] = useState(false);
     const [isPending, startTransition] = useTransition();
 
     /*== 创建与更新共用一套表单，按 mode 决定请求目标与成功后的跳转行为。 ==*/
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setMessage(null);
+        setIsError(false);
 
         startTransition(async () => {
             const response =
@@ -86,6 +88,7 @@ export default function PostEditorForm({ mode, post }: PostEditorFormProps) {
 
             if (!response.ok) {
                 setMessage(payload.message || '保存失败，请稍后重试。');
+                setIsError(true);
                 return;
             }
 
@@ -234,7 +237,7 @@ export default function PostEditorForm({ mode, post }: PostEditorFormProps) {
 
                                 <div className='admin-panel-muted space-y-4'>
                                     <p className='text-sm font-medium text-slate-950'>保存说明</p>
-                                    <p className='text-sm leading-7 text-slate-600'>
+                                    <p className={`text-sm leading-7 ${message ? (isError ? 'text-red-600' : 'text-emerald-600') : 'text-slate-600'}`}>
                                         {message || (mode === 'create' ? '创建成功后会自动进入对应文章编辑页。' : '点击保存后会直接更新数据库中的文章内容。')}
                                     </p>
 

@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 export default async function AdminPage() {
     const posts = await getAllPosts();
     const publishedPosts = posts.filter((post) => post.status === 'published');
-    const draftPosts = posts.filter((post) => post.status === 'draft');
     const recentPosts = posts.slice(0, 4);
 
     const totalPosts = Math.max(posts.length, 342);
@@ -134,12 +133,7 @@ export default async function AdminPage() {
                         </tbody>
                     </table>
                 </div>
-            </section>
-
-            <div className='hidden'>
-                {draftPosts.length}
-                {publishedPosts.length}
-            </div>
+            </section>
         </div>
     );
 }

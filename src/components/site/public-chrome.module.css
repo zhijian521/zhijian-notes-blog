@@ -153,14 +153,9 @@
 
 /*== 页脚 ==*/
 .footer {
+    background: #fbf9f9;
     padding: 1.5rem 0;
     text-align: center;
-}
-
-.footerMotto {
-    margin: 0;
-    font-size: 0.8125rem;
-    color: var(--public-ink-soft);
 }
 
 .footerCopy {

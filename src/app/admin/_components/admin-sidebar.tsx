@@ -4,23 +4,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LogOut, Plus, UserCircle2 } from 'lucide-react';
-import { useTransition } from 'react';
+import { useState } from 'react';
 
 import { ADMIN_NAV_ITEMS, API_ROUTES, APP_ROUTES, SITE_METADATA } from '@/lib/site';
-import { cn } from '@/lib/utils';
+import { cn, isNavItemActive } from '@/lib/utils';
 import styles from './admin-sidebar.module.css';
 
 /*== 后台侧边栏：承载品牌、快捷入口、导航与账户操作，并基于当前路由实时更新高亮状态。 ==*/
 export default function AdminSidebar() {
     const pathname = usePathname();
-    const [isPending, startTransition] = useTransition();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     function handleLogout() {
-        startTransition(async () => {
-            await fetch(API_ROUTES.adminLogout, {
-                method: 'POST',
-            });
-
+        setIsLoggingOut(true);
+        fetch(API_ROUTES.adminLogout, { method: 'POST' }).finally(() => {
             window.location.href = APP_ROUTES.adminLogin;
         });
     }
@@ -42,7 +39,7 @@ export default function AdminSidebar() {
 
             <nav aria-label='后台主导航' className={styles.nav}>
                 {ADMIN_NAV_ITEMS.map((item) => {
-                    const isActive = item.match === 'exact' ? pathname === item.href : pathname.startsWith(item.href);
+                    const isActive = isNavItemActive(pathname, item.href, item.match);
                     const Icon = item.icon;
 
                     return (
@@ -65,12 +62,12 @@ export default function AdminSidebar() {
                 </button>
                 <button
                     className={cn(styles.footerButton, styles.navItem, styles.footerDanger)}
-                    disabled={isPending}
+                    disabled={isLoggingOut}
                     onClick={handleLogout}
                     type='button'
                 >
                     <LogOut className='h-4 w-4' />
-                    <span>{isPending ? '退出中...' : '退出登录'}</span>
+                    <span>{isLoggingOut ? '退出中...' : '退出登录'}</span>
                 </button>
             </div>
         </aside>

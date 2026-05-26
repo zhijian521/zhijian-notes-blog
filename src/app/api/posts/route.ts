@@ -8,5 +8,6 @@ export async function GET() {
 
     return NextResponse.json({
         data: posts,
+        message: '获取成功。',
     });
 }

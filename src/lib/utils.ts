@@ -5,3 +5,8 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
+
+/*== 判断导航项是否处于激活状态，前台和后台导航共用。 ==*/
+export function isNavItemActive(pathname: string, href: string, match: 'exact' | 'prefix'): boolean {
+    return match === 'exact' ? pathname === href : pathname.startsWith(href);
+}

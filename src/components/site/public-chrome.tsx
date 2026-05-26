@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 
 import { APP_ROUTES, PUBLIC_NAV_ITEMS, SITE_METADATA } from '@/lib/site';
+import { isNavItemActive } from '@/lib/utils';
 import styles from './public-chrome.module.css';
 
 interface PublicChromeProps {
@@ -32,7 +33,7 @@ export default function PublicChrome({ children }: PublicChromeProps) {
                     <div className={styles.navArea}>
                         <nav aria-label="站点主导航" className={styles.nav}>
                             {PUBLIC_NAV_ITEMS.map((item) => {
-                                const isActive = item.match === 'exact' ? pathname === item.href : pathname.startsWith(item.href);
+                                const isActive = isNavItemActive(pathname, item.href, item.match);
 
                                 return (
                                     <Link

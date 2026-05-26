@@ -155,7 +155,7 @@ export async function updatePostById(id: number, input: UpdatePostInput): Promis
 
         return getPostById(id);
     } catch (error) {
-        console.error('Failed to update post.', error);
+        console.error('Failed to update post.', { id, error });
         return null;
     }
 }
@@ -179,7 +179,7 @@ export async function createPost(input: CreatePostInput): Promise<Post | null> {
 
         return getPostById(result.insertId);
     } catch (error) {
-        console.error('Failed to create post.', error);
+        console.error('Failed to create post.', { error });
         return null;
     }
 }
@@ -244,7 +244,7 @@ async function readPostsFromDatabase(options: ReadPostsOptions): Promise<Post[]>
             updatedAt: row.updated_at,
         }));
     } catch (error) {
-        console.error('Failed to read posts.', error);
+        console.error('Failed to read posts.', { options, error });
         return [];
     }
 }

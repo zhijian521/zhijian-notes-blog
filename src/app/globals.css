@@ -25,13 +25,12 @@
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 8px);
     --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
-    --font-serif:
-        system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+    --font-serif: 'Noto Serif SC', 'Songti SC', 'STSong', Georgia, serif;
     --font-ui: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
 }
 
 :root {
-    --background: #fdf7ff;
+    --background: #fbf9f9;
     --foreground: #1d1b20;
     --card: rgba(255, 255, 255, 0.8);
     --card-foreground: #1d1b20;
@@ -152,19 +151,10 @@ body[data-app='admin-login'] {
     background: #fbf9f9;
 }
 
-body[data-app='admin']::before {
-    display: none;
-}
-
-body[data-app='admin']::after {
-    display: none;
-}
-
-body[data-app='admin-login']::before {
-    display: none;
-}
-
-body[data-app='admin-login']::after {
+body[data-app="admin"]::before,
+body[data-app="admin"]::after,
+body[data-app="admin-login"]::before,
+body[data-app="admin-login"]::after {
     display: none;
 }
 
@@ -205,68 +195,6 @@ select {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
-}
-
-.public-shell {
-    @apply mx-auto w-full max-w-7xl px-4 md:px-6;
-}
-
-.public-panel {
-    @apply rounded-[30px] border border-border/70 shadow-[0_20px_60px_rgba(68,39,26,0.08)] backdrop-blur;
-    background: var(--public-panel);
-}
-
-.public-topbar {
-    @apply flex flex-col gap-4 rounded-[28px] border border-white/80 px-5 py-4 shadow-[0_14px_42px_rgba(60,33,24,0.06)] backdrop-blur md:flex-row md:items-center md:justify-between md:px-7;
-    background: rgba(255, 252, 248, 0.78);
-}
-
-.seal-dot {
-    height: 16px;
-    width: 16px;
-    border-radius: 9999px;
-    background: var(--public-primary);
-    box-shadow:
-        16px 8px 0 rgba(0, 79, 136, 0.22),
-        22px -6px 0 rgba(159, 0, 15, 0.08);
-}
-
-.public-kicker {
-    @apply text-[11px] font-semibold uppercase tracking-[0.3em];
-    color: var(--public-ink-soft);
-}
-
-.public-title {
-    font-family: var(--font-serif);
-    color: var(--public-ink);
-    letter-spacing: -0.035em;
-}
-
-.public-copy {
-    color: var(--public-ink-soft);
-    line-height: 1.9;
-}
-
-.seal-badge {
-    @apply inline-flex items-center rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-primary;
-}
-
-.public-link {
-    @apply inline-flex items-center gap-2 text-sm font-semibold text-primary transition hover:text-primary/80;
-}
-
-.grain-card {
-    position: relative;
-    overflow: hidden;
-}
-
-.grain-card::before {
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 38%), radial-gradient(circle at top right, rgba(200, 22, 29, 0.06), transparent 30%);
-    content: '';
-    pointer-events: none;
 }
 
 .admin-shell {

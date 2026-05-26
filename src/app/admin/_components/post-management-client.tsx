@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { LogOut, Plus, Search } from 'lucide-react';
-import { useMemo, useState, useTransition } from 'react';
+import { useMemo, useState } from 'react';
 
 import AdminPageHeader from '@/app/admin/_components/admin-page-header';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +11,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatPostDateTime, type Post, type PostStatus } from '@/lib/post-shared';
 import { API_ROUTES, APP_ROUTES } from '@/lib/site';
 
@@ -23,7 +23,7 @@ interface PostManagementClientProps {
 export default function PostManagementClient({ initialPosts }: PostManagementClientProps) {
     const [keyword, setKeyword] = useState('');
     const [status, setStatus] = useState<'all' | PostStatus>('all');
-    const [isPending, startTransition] = useTransition();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     /*== 列表筛选保持在客户端完成，避免后台管理页做不必要的额外请求。 ==*/
     const filteredPosts = useMemo(() => {
@@ -38,11 +38,8 @@ export default function PostManagementClient({ initialPosts }: PostManagementCli
     }, [initialPosts, keyword, status]);
 
     function handleLogout() {
-        startTransition(async () => {
-            await fetch(API_ROUTES.adminLogout, {
-                method: 'POST',
-            });
-
+        setIsLoggingOut(true);
+        fetch(API_ROUTES.adminLogout, { method: 'POST' }).finally(() => {
             window.location.href = APP_ROUTES.adminLogin;
         });
     }
@@ -58,7 +55,7 @@ export default function PostManagementClient({ initialPosts }: PostManagementCli
                                 新建文章
                             </Link>
                         </Button>
-                        <Button className='rounded-xl' disabled={isPending} onClick={handleLogout} type='button' variant='outline'>
+                        <Button className='rounded-xl' disabled={isLoggingOut} onClick={handleLogout} type='button' variant='outline'>
                             <LogOut className='h-4 w-4' />
                             退出
                         </Button>
@@ -90,10 +87,7 @@ export default function PostManagementClient({ initialPosts }: PostManagementCli
                                 <TabsTrigger value='all'>全部</TabsTrigger>
                                 <TabsTrigger value='published'>已发布</TabsTrigger>
                                 <TabsTrigger value='draft'>草稿</TabsTrigger>
-                            </TabsList>
-                            <TabsContent value={status}>
-                                <span className='hidden' />
-                            </TabsContent>
+                            </TabsList>
                         </Tabs>
                     </div>
 

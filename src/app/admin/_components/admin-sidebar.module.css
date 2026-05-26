@@ -7,7 +7,7 @@
     width: 16rem;
     flex-direction: column;
     border-right: 1px solid var(--border);
-    background: #f5f3f3;
+    background: var(--muted);
     padding: 24px 16px;
 }
 
@@ -53,7 +53,7 @@
     margin: 0 8px 24px;
     border: 0;
     border-radius: 0;
-    background: #9e0027;
+    background: var(--primary);
     padding: 10px 14px;
     font-size: 14px;
     line-height: 1.4;
@@ -93,7 +93,7 @@
     font-size: 14px;
     line-height: 1.4;
     font-weight: 500;
-    color: #5b4040;
+    color: var(--muted-foreground);
     text-align: left;
     transition:
         background-color 0.2s ease,
@@ -104,7 +104,7 @@
 
 .navItem:hover {
     background: rgba(228, 226, 226, 0.55);
-    color: #1b1c1c;
+    color: var(--foreground);
 }
 
 .navActive {

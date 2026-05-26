@@ -102,7 +102,7 @@ function getSessionSecret(): string {
 }
 
 /*== 使用 timingSafeEqual 避免直接字符串比较带来的时序侧信道问题。 ==*/
-function safeEqual(left: string, right: string): boolean {
+export function safeEqual(left: string, right: string): boolean {
     const leftBuffer = Buffer.from(left);
     const rightBuffer = Buffer.from(right);
 

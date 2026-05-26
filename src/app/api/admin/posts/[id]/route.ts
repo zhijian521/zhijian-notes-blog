@@ -71,10 +71,10 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         );
     }
 
-    if (!/^[a-z0-9-]+$/.test(slug)) {
+    if (!/^[a-z0-9-]+$/.test(slug) || slug.length > 120) {
         return NextResponse.json(
             {
-                message: 'Slug 只能使用小写字母、数字和中划线。',
+                message: 'Slug 只能使用小写字母、数字和中划线，且长度不超过 120 个字符。',
             },
             {
                 status: 400,
