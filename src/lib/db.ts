@@ -11,7 +11,13 @@ export function getDb() {
 
     if (!pool) {
         /*== 整个进程复用同一个连接池，避免每次请求都重复建立连接。 ==*/
-        pool = mysql.createPool(process.env.DATABASE_URL);
+        pool = mysql.createPool({
+            uri: process.env.DATABASE_URL,
+            connectionLimit: 3,
+            connectTimeout: 5000,
+            waitForConnections: true,
+            queueLimit: 0,
+        });
     }
 
     return pool;
